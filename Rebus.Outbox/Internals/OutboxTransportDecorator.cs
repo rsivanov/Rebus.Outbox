@@ -35,7 +35,7 @@ namespace Rebus.Outbox.Internals
 				return messages;
 			});
 			
-			message.Headers.Add(OutboxHeaders.DestinationAddress, destinationAddress);
+			message.Headers.Add(OutboxHeaders.Recipient, destinationAddress);
 
 			outgoingMessages.Enqueue(message);
 			

@@ -11,17 +11,17 @@ namespace Rebus.Outbox.Config
 	/// <summary>
 	/// Configuration extensions to use transactional outbox for transport
 	/// </summary>
-	public static class OutboxTransportConfigurationExtensions
+	public static class OutboxConfigurationExtensions
 	{
 		/// <summary>
 		/// Decorates transport to save messages into an outbox instead of sending them directly
 		/// </summary>
 		/// <param name="configurer"></param>
 		/// <param name="outboxStorageConfigurer"></param>
-		/// <param name="runOutboxMessagesProcessor">Whether to run a background task to send messages from the outbox through the transport</param>
+		/// <param name="configureOptions"></param>
 		/// <exception cref="ArgumentNullException"></exception>
 		public static void UseOutbox(this StandardConfigurer<ITransport> configurer,
-			Action<StandardConfigurer<IOutboxStorage>> outboxStorageConfigurer, bool runOutboxMessagesProcessor = true)
+			Action<StandardConfigurer<IOutboxStorage>> outboxStorageConfigurer, Action<OutboxOptions> configureOptions = null)
 		{
 			if (configurer == null) 
 				throw new ArgumentNullException(nameof(configurer));
@@ -29,14 +29,16 @@ namespace Rebus.Outbox.Config
 				throw new ArgumentNullException(nameof(outboxStorageConfigurer));
 			
 			outboxStorageConfigurer(configurer.OtherService<IOutboxStorage>());
-			
+			var outboxOptions = new OutboxOptions();
+			configureOptions?.Invoke(outboxOptions);
+
 			configurer.Decorate(c =>
 			{
 				var transport = c.Get<ITransport>();
 				var outboxStorage = c.Get<IOutboxStorage>();
-				if (runOutboxMessagesProcessor)
+				if (outboxOptions.RunMessagesProcessor)
 				{
-					var outboxMessagesProcessor = new OutboxMessagesProcessor(transport, outboxStorage, c.Get<IBackoffStrategy>(),
+					var outboxMessagesProcessor = new OutboxMessagesProcessor(outboxOptions.MaxMessagesToRetrieve, transport, outboxStorage, c.Get<IBackoffStrategy>(),
 						c.Get<IRebusLoggerFactory>(), c.Get<CancellationToken>());
 					outboxMessagesProcessor.Run();
 				}

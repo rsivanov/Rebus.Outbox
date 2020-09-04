@@ -2,6 +2,6 @@
 {
 	public static class OutboxHeaders
 	{
-		public const string DestinationAddress = "rbs2-outbox-destination-address";
+		public const string Recipient = "rbs2-outbox-recipient";
 	}
 }
