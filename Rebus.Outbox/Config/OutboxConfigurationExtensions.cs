@@ -20,7 +20,7 @@ namespace Rebus.Outbox.Config
 		/// <param name="outboxStorageConfigurer"></param>
 		/// <param name="configureOptions"></param>
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void UseOutbox(this StandardConfigurer<ITransport> configurer,
+		public static void Outbox(this StandardConfigurer<ITransport> configurer,
 			Action<StandardConfigurer<IOutboxStorage>> outboxStorageConfigurer, Action<OutboxOptions> configureOptions = null)
 		{
 			if (configurer == null) 
