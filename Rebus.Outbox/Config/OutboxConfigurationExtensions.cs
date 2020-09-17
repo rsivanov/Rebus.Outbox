@@ -19,31 +19,35 @@ namespace Rebus.Outbox.Config
 		/// <param name="configurer"></param>
 		/// <param name="outboxStorageConfigurer"></param>
 		/// <param name="configureOptions"></param>
+		/// <returns></returns>
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void Outbox(this StandardConfigurer<ITransport> configurer,
+		public static RebusConfigurer Outbox(this RebusConfigurer configurer,
 			Action<StandardConfigurer<IOutboxStorage>> outboxStorageConfigurer, Action<OutboxOptions> configureOptions = null)
 		{
-			if (configurer == null) 
-				throw new ArgumentNullException(nameof(configurer));
-			if (outboxStorageConfigurer == null)
-				throw new ArgumentNullException(nameof(outboxStorageConfigurer));
-			
-			outboxStorageConfigurer(configurer.OtherService<IOutboxStorage>());
-			var outboxOptions = new OutboxOptions();
-			configureOptions?.Invoke(outboxOptions);
-
-			configurer.Decorate(c =>
+			configurer.Transport(t =>
 			{
-				var transport = c.Get<ITransport>();
-				var outboxStorage = c.Get<IOutboxStorage>();
-				if (outboxOptions.RunMessagesProcessor)
+				if (outboxStorageConfigurer == null)
+					throw new ArgumentNullException(nameof(outboxStorageConfigurer));
+			
+				outboxStorageConfigurer(t.OtherService<IOutboxStorage>());
+				var outboxOptions = new OutboxOptions();
+				configureOptions?.Invoke(outboxOptions);
+
+				t.Decorate(c =>
 				{
-					var outboxMessagesProcessor = new OutboxMessagesProcessor(outboxOptions.MaxMessagesToRetrieve, transport, outboxStorage, c.Get<IBackoffStrategy>(),
-						c.Get<IRebusLoggerFactory>(), c.Get<CancellationToken>());
-					outboxMessagesProcessor.Run();
-				}
-				return new OutboxTransportDecorator(transport, outboxStorage);
+					var transport = c.Get<ITransport>();
+					var outboxStorage = c.Get<IOutboxStorage>();
+					if (outboxOptions.RunMessagesProcessor)
+					{
+						var outboxMessagesProcessor = new OutboxMessagesProcessor(outboxOptions.MaxMessagesToRetrieve, transport, outboxStorage, c.Get<IBackoffStrategy>(),
+							c.Get<IRebusLoggerFactory>(), c.Get<CancellationToken>());
+						outboxMessagesProcessor.Run();
+					}
+					return new OutboxTransportDecorator(transport, outboxStorage);
+				});
+
 			});
+			return configurer;
 		}
 	}
 }

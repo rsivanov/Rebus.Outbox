@@ -2,6 +2,17 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <PackageVersion>1.0.0</PackageVersion>
+        <AssemblyVersion>$(PackageVersion)</AssemblyVersion>
+        <Authors>rsivanov</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/rsivanov/Rebus.Outbox</PackageProjectUrl>
+        <PackageDescription>Provides an Outbox abstraction for Rebus</PackageDescription>
+        <Copyright>Copyright 2020</Copyright>
+        <PackageTags>Outbox;Rebus</PackageTags>
+        <RepositoryUrl>https://github.com/rsivanov/Rebus.Outbox</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>        
     </PropertyGroup>
 
     <ItemGroup>
