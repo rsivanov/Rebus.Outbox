@@ -11,7 +11,7 @@ Why?
 
 How to use
 ===
-This is just an abstraction that should be implemented to use a specific storage. For example a possible SQL Server outbox configuration would be something like:
+This is just an abstraction that should be implemented to use a specific storage. For example a possible [SQL Server outbox](https://github.com/rsivanov/Rebus.SqlServer.Outbox) configuration would be something like:
 
 ```csharp
 Configure.With(...)
