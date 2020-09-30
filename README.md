@@ -7,7 +7,7 @@ Provides a transactional outbox abstraction to use with [Rebus](https://github.c
 
 Why?
 ===
-[Rebus](https://github.com/rebus-org/Rebus) doesn't currently include an abstraction to implement [Transactional outbox](https://github.com/canton7/RestEase#query-parameters).
+[Rebus](https://github.com/rebus-org/Rebus) doesn't currently include an abstraction to implement [Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html).
 
 How to use
 ===
