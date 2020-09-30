@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-        <PackageVersion>1.0.0</PackageVersion>
+        <PackageVersion>1.1.0</PackageVersion>
         <AssemblyVersion>$(PackageVersion)</AssemblyVersion>
         <Authors>rsivanov</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -14,9 +14,13 @@
         <RepositoryUrl>https://github.com/rsivanov/Rebus.Outbox</RepositoryUrl>
         <RepositoryType>git</RepositoryType>        
     </PropertyGroup>
-
     <ItemGroup>
-      <PackageReference Include="Rebus" Version="6.3.1" />
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Rebus" Version="6.4.1" />
     </ItemGroup>
 
 </Project>

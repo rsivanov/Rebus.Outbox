@@ -9,7 +9,7 @@ namespace Rebus.Outbox.Internals
 {
 	internal class OutboxTransportDecorator : ITransport
 	{
-		const string OutgoingMessagesItemsKey = "outbox-outgoing-messages";
+		internal const string OutgoingMessagesItemsKey = "outbox-outgoing-messages";
 		private readonly ITransport _transport;
 		private readonly IOutboxStorage _outboxStorage;
 
