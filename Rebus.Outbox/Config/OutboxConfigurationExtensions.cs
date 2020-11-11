@@ -39,8 +39,15 @@ namespace Rebus.Outbox.Config
 					var outboxStorage = c.Get<IOutboxStorage>();
 					if (outboxOptions.RunMessagesProcessor)
 					{
-						var outboxMessagesProcessor = new OutboxMessagesProcessor(outboxOptions.MaxMessagesToRetrieve, transport, outboxStorage, c.Get<IBackoffStrategy>(),
-							c.Get<IRebusLoggerFactory>(), c.Get<CancellationToken>());
+						var outboxMessagesProcessor = new OutboxMessagesProcessor(
+							outboxOptions.MaxMessagesToRetrieve,
+							transport,
+							outboxStorage,
+							c.Get<IBackoffStrategy>(),
+							c.Get<IRebusLoggerFactory>(),
+							outboxOptions.PollInterval,
+							c.Get<CancellationToken>());
+
 						outboxMessagesProcessor.Run();
 					}
 					return new OutboxTransportDecorator(transport, outboxStorage);
