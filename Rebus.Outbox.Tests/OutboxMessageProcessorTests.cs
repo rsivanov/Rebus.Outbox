@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NSubstitute;
@@ -27,8 +28,14 @@ namespace Rebus.Outbox.Tests
 			_outboxStorage = Substitute.For<IOutboxStorage>();
 			_backoffStrategy = Substitute.For<IBackoffStrategy>();
 			_busDisposalCancellationTokenSource = new CancellationTokenSource();
-			_processor = new OutboxMessagesProcessor(TopMessagesToRetrieve, _transport, _outboxStorage,
-				_backoffStrategy, new NullLoggerFactory(), _busDisposalCancellationTokenSource.Token);
+			_processor = new OutboxMessagesProcessor(
+				TopMessagesToRetrieve,
+				_transport,
+				_outboxStorage,
+				_backoffStrategy,
+				new NullLoggerFactory(),
+				TimeSpan.Zero,
+				_busDisposalCancellationTokenSource.Token);
 		}
 		
 		[Fact]
