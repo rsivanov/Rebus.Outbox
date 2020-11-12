@@ -16,7 +16,6 @@ namespace Rebus.Outbox.Internals
 		private readonly IOutboxStorage _outboxStorage;
 		private readonly IBackoffStrategy _backoffStrategy;
 		private readonly CancellationToken _busDisposalCancellationToken;
-		private readonly TimeSpan _pollInterval;
 		private readonly ILog _log;
 
 		public OutboxMessagesProcessor(
@@ -25,14 +24,12 @@ namespace Rebus.Outbox.Internals
 			IOutboxStorage outboxStorage,
 			IBackoffStrategy backoffStrategy,
 			IRebusLoggerFactory rebusLoggerFactory,
-			TimeSpan pollInterval,
 			CancellationToken busDisposalCancellationToken)
 		{
 			_topMessagesToRetrieve = topMessagesToRetrieve;
 			_transport = transport;
 			_outboxStorage = outboxStorage;
 			_backoffStrategy = backoffStrategy;
-			_pollInterval = pollInterval;
 			_busDisposalCancellationToken = busDisposalCancellationToken;
 			_log = rebusLoggerFactory.GetLogger<OutboxMessagesProcessor>();
 		}
@@ -80,8 +77,6 @@ namespace Rebus.Outbox.Internals
 					{
 						_backoffStrategy.Reset();
 					}
-
-					await Task.Delay(_pollInterval, _busDisposalCancellationToken);
 				}
 				catch (OperationCanceledException) when (_busDisposalCancellationToken.IsCancellationRequested)
 				{
@@ -90,6 +85,7 @@ namespace Rebus.Outbox.Internals
 				catch (Exception exception)
 				{
 					_log.Error(exception, "Unhandled exception in outbox messages processor");
+					await _backoffStrategy.WaitErrorAsync(_busDisposalCancellationToken);
 				}
 			}
 

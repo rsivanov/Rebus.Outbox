@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NSubstitute;
@@ -34,7 +33,6 @@ namespace Rebus.Outbox.Tests
 				_outboxStorage,
 				_backoffStrategy,
 				new NullLoggerFactory(),
-				TimeSpan.Zero,
 				_busDisposalCancellationTokenSource.Token);
 		}
 		

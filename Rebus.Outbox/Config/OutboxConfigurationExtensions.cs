@@ -45,7 +45,6 @@ namespace Rebus.Outbox.Config
 							outboxStorage,
 							c.Get<IBackoffStrategy>(),
 							c.Get<IRebusLoggerFactory>(),
-							outboxOptions.PollInterval,
 							c.Get<CancellationToken>());
 
 						outboxMessagesProcessor.Run();

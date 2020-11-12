@@ -16,10 +16,5 @@ namespace Rebus.Outbox.Config
 		/// Max number of messages to retrieve from the outbox and send through the transport in a single transaction
 		/// </summary>
 		public int MaxMessagesToRetrieve { get; set; } = 10;
-
-		/// <summary>
-		/// Outbox table polling interval
-		/// </summary>
-		public TimeSpan PollInterval { get; set; } = TimeSpan.FromSeconds(1);
 	}
 }
